@@ -65,6 +65,10 @@ jobQueue에서 작업을 디큐하고 정의된 작업의 concurrency 수준보�
 nextRunAt을 갱신 (computeNextRunAt)하고 
 변경 사항을 mongodb에 저장
 
+작업 완료시 callback을 통해
+lastFinishedAt이 현재 시각으로 갱신되고
+lockedAt = null 설정됨
+
 
 (
     # computeNextRunAt
