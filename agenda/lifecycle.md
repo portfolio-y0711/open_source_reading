@@ -38,6 +38,37 @@ lockedAt을 현재 시간으로 갱신하고
 
 # jobProcessing
 
+returnNextConcurrencyFreeJob으로 작업 가능(설정된 컨커런시보다 작업 중인 프로세스 개수가 적은)한 job을 반환 받고
+nextRunAt이 경과된 경우 runOrRetry 실행
+
+
+(
+    # returnNextConcurrencyFreeJob
+
+    정의된 작업에 설정된 concurrency 수준보다 실행중인 작업의 수가 적을 경우
+    큐에 있는 작업을 꺼내서 반환
+)
+
+# runOrRetry
+
+jobQueue에서 작업을 디큐하고 정의된 작업의 concurrency 수준보다 실행중인 작업의 수가 적고, maxConcurrency보다 전체 작업의 수가 적을 경우
+
+디큐된 작업의 lock 유효기간이 만료되었을 경우 락을 해제하고 실행중인 작업(_runningJobs)에 작업을 추가한뒤
+해당 작업의 running 카운트 증가
+
+작업 실행 (job.run)
+
+
+# run
+
+작업 실행시 job의 lastRunAt을 현재 시간으로 갱신하고
+nextRunAt을 갱신
+
+
+
+
+
+
 
 
 
