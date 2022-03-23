@@ -56,20 +56,28 @@ jobQueue에서 작업을 디큐하고 정의된 작업의 concurrency 수준보�
 디큐된 작업의 lock 유효기간이 만료되었을 경우 락을 해제하고 실행중인 작업(_runningJobs)에 작업을 추가한뒤
 해당 작업의 running 카운트 증가
 
-작업 실행 (job.run)
+작업 실행 (job.run) 후 processJobResult로 결과 전달
 
 
 # run
 
 작업 실행시 job의 lastRunAt을 현재 시간으로 갱신하고
-nextRunAt을 갱신
+nextRunAt을 갱신 (computeNextRunAt)하고 
+변경 사항을 mongodb에 저장
 
 
+(
+    # computeNextRunAt
+    job의 반복 주기와 nextRunAt 설정 시간을 이용하여
+    다음 번 실행 시점(nextRunAt)을 갱신
+)
 
+# processJobResult
 
-
-
-
-
+작업이 성공했으므로 _runningJobs에서 작업을 제거하고
+running 카운터에서 차감
+마찬가지로 _lockedJobs에서 작업을 제거하고
+locked 카운터에서 차감
+jobProcessing을 호출하여 [jobProcessing - runOrRetry - run - processJobResult] 구간 반복 수행
 
 ```
